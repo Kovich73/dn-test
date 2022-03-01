@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import { SomeWidget } from './components/some-widget';
+import { WidgetLoader } from './components/widget-loader';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+/*
+TODO
+    Не понятные моменты
+    1) Не совсем понял зачем тут использовтаь i18n
+    2) Откуда будут браться messages(наверно redux, либо можно запрос написать в хуке useTranslate)
+    3) Что отображать если при получении переводов ошибка(если с сервера тянутся)
+    4) Всегда ли перед загрузкой виджетов переводы уже будут
+        если нет что отображать вместо переводов
+    5) В каком случае отображать текст Success.LoadingFinished ?
+        если виджет уже загружен, то зачем нам отображать, что он загружен,
+        если мы его можем сразу показать?
+*/
 
-export default App;
+export const App = () => {
+    const [load, setLoad] = useState(true);
+    const [error, setError] = useState(false);
+
+    useEffect(() => {
+        // TODO компонент загрузился
+        setTimeout(() => {
+            setLoad(false);
+        }, 3000);
+
+        // TODO Запрос виджета завершился с ошибкой
+        // setTimeout(() => {
+        //     setLoad(false);
+        //     setError(true);
+        // }, 6000);
+    }, []);
+
+    return (
+        <React.Fragment>
+            <WidgetLoader error={ error } loading={ load }>
+                <SomeWidget />
+            </WidgetLoader>
+            <br />
+            <WidgetLoader error={ false } loading={ true }>
+                <SomeWidget />
+            </WidgetLoader>
+        </React.Fragment>
+    );
+};
