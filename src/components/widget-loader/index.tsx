@@ -56,9 +56,5 @@ export const WidgetLoader = ({ children, loading, error }: Props) => {
         );
     }
 
-    return (
-        <div>
-            { children }
-        </div>
-    );
+    return children;
 };
